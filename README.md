@@ -26,7 +26,7 @@ You need to have Node.js, npm and MySQL installed on your machine.
 
 1. Clone the repo
 ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/baketti/CRUD-Products-and-Orders
 ```
 
 2. Install NPM packages
@@ -120,10 +120,5 @@ Each product response object is structured as follows:
 ```
 Note: The PUT operation is not supported for orders, because orders cannot be updated but only deleted.
 
-### License
-Distributed under the MIT License. See LICENSE for more information.
-
 ### Contact
 Emanuele Giovanni Bachetti - e.bachetti1997@gmail.com
-
-Project Link: https://github.com/your_username/repo_name
