@@ -1,0 +1,52 @@
+import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { IError } from '../lib/interfaces';
+
+export function checkUserAuthentication(req: Request, res: Response, next: NextFunction){
+    if (!req.session || !req.session.userId) {
+        //res.redirect('/login');
+        return
+    } else {
+      next();
+    }
+  }
+
+export function checkIdParam(req:Request,res:Response,next:NextFunction) {
+  try{
+    if(req.params.id && parseInt(req.params.id)) 
+      next()
+    else {
+      let error: IError = {
+        status: StatusCodes.BAD_REQUEST,
+        message: "Invalid ID!"
+      }
+      next(error)
+    }
+  }catch(err){
+    let error: IError = {
+      status: StatusCodes.BAD_REQUEST,
+      message: err
+    };
+    next(error);
+  }
+}
+
+export function checkBody(req:Request,res:Response,next:NextFunction) {
+  if(!req.body || Object.keys(req.body).length === 0){
+    let error: IError = {
+      status:StatusCodes.BAD_REQUEST,
+      message: "Missing data!"
+    }
+    next(error)
+  }else {
+    next()
+  }
+}
+
+export function errorHandler(err: IError,req:Request,res:Response,next:NextFunction){
+  res.status(
+    err.status || StatusCodes.INTERNAL_SERVER_ERROR 
+  ).send({
+      message: err.message
+    })
+}
