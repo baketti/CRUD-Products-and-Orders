@@ -1,6 +1,6 @@
 import { Model, CreateOptions } from 'sequelize';
-import { UserRoles } from '../../db/models/User/interfaces';
-import { UserAttributes } from '../../db/models/User';
+import { UserAttributes } from '@/db/models/User';
+import { UserRoles } from './interfaces';
 
 interface UserCreateOptions extends CreateOptions<UserAttributes> {
     id:number;
@@ -27,7 +27,8 @@ interface PutUserBodyRequest {
     role?: UserRoles;
 }
 
-export { 
+
+export {
     UserCreateOptions,
     PostUserBodyRequest,
     PutUserBodyRequest

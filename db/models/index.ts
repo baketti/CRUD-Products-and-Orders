@@ -3,6 +3,7 @@ import { Order, OrderAttributes, OrderOptions } from './Order';
 import { User, UserAttributes, UserOptions } from './User';
 import { Product, ProductAttributes, ProductOptions } from './Product';
 import { ProductOrder, ProductOrderAttributes, ProductOrderOptions } from "./ProductOrder";
+import { Session, SessionAttributes, SessionOptions } from "./Session";
 
 function  initModels(sequelize: Sequelize){
     //MODELS INITIALIZATION
@@ -31,6 +32,13 @@ function  initModels(sequelize: Sequelize){
         UserAttributes, {
             sequelize,
             ...UserOptions
+        }
+    )
+
+    Session.init(
+        SessionAttributes, {
+            sequelize,
+            ...SessionOptions
         }
     )
     //RELATIONSHIPS BETWEEN TABLES

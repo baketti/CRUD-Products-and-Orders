@@ -6,12 +6,7 @@ export interface UserAttributes {
     surname: string;
     email: string;
     password: string;
-    role: string;
+    role?: string;
 }
 
 export interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
-
-export enum UserRoles {
-    ADMIN = 'admin',
-    USER = 'user'
-  }

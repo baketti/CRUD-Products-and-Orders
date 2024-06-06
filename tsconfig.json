@@ -2,12 +2,22 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "es2022",
     "esModuleInterop": true,
     "target": "es2022",
     "moduleResolution": "node",     
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+        "@/*": ["./*"]
+    },
   },
   "lib": ["es2022"],
+  "include": [
+    "lib/**/*",
+    "**/*.ts",
+    "*.ts"
+  ], 
 }

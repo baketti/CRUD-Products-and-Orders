@@ -2,11 +2,11 @@ import { DataTypes, Model } from 'sequelize';
 import { ProductAttributes, ProductCreationAttributes } from './interfaces';
 
   class Product extends Model<ProductAttributes,ProductCreationAttributes> {
-    public name!: string;
+/*     public name!: string;
     public price!: number;
     public description!: string;
     public startDate!: Date;
-    public endDate!: Date;
+    public endDate!: Date; */
   }
 
   const ProductAttributes = {

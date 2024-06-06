@@ -1,6 +1,7 @@
 import { Product } from "../../db/models/Product";
 import { User } from "../../db/models/User";
 import { initStruct } from "../../db/init-struct";
+import { hash } from "bcrypt";
 
 (async() => {
     await initStruct();
@@ -81,64 +82,64 @@ import { initStruct } from "../../db/init-struct";
           name: 'John',
           surname: 'Doe',
           email: 'john.doe@example.com',
-          password: 'password123',
+          password: await hash('password123', 10),
           role: 'admin'
         },
         {
           name: 'Jane',
           surname: 'Smith',
           email: 'jane.smith@example.com',
-          password: 'password456'
+          password: await hash('password456',10)
         },
         {
           name: 'Michael',
           surname: 'Johnson',
           email: 'michael.johnson@example.com',
-          password: 'password789'
+          password: await hash('password789',10)
         },
         {
           name: 'Emily',
           surname: 'Davis',
           email: 'emily.davis@example.com',
-          password: 'password101'
+          password: await hash('password101',10)
         },
         {
           name: 'David',
           surname: 'Wilson',
           email: 'david.wilson@example.com',
-          password: 'password102',
+          password: await hash('password102',10),
           role: 'admin'
         },
         {
           name: 'Sarah',
           surname: 'Miller',
           email: 'sarah.miller@example.com',
-          password: 'password103'
+          password: await hash('password103',10)
         },
         {
           name: 'James',
           surname: 'Brown',
           email: 'james.brown@example.com',
-          password: 'password104'
+          password: await hash('password104',10)
         },
         {
           name: 'Jessica',
           surname: 'Taylor',
           email: 'jessica.taylor@example.com',
-          password: 'password105',
+          password: await hash('password105',10),
           role: 'admin'
         },
         {
           name: 'Daniel',
           surname: 'Anderson',
           email: 'daniel.anderson@example.com',
-          password: 'password106'
+          password: await hash('password106',10)
         },
         {
           name: 'Laura',
           surname: 'Thomas',
           email: 'laura.thomas@example.com',
-          password: 'password107'
+          password: await hash('password107',10)
         }
       ]);
    }

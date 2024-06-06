@@ -10,7 +10,9 @@ export async function initStruct() {
         //IF CONNECTION IS OK, INIT MODELS
         initModels(sequelize);
         //SYNC TABLES
-        await sequelize.sync();    
+        await sequelize.sync();
+        //sync({ force: true }) to drop tables and recreate them    
+        //sync({ alter: true }) to modify tables and apply changes after restart    
         console.log("DB structure initialized successfully!");
     }
     catch (e) {

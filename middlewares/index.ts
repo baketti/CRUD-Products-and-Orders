@@ -4,8 +4,11 @@ import { IError } from '../lib/interfaces';
 
 export function checkUserAuthentication(req: Request, res: Response, next: NextFunction){
     if (!req.session || !req.session.userId) {
-        //res.redirect('/login');
-        return
+        const error: IError = {
+            status: StatusCodes.UNAUTHORIZED,
+            message: "You are not authorized! Please login first!"
+        }
+        return next(error);
     } else {
       next();
     }
