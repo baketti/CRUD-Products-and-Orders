@@ -21,7 +21,7 @@ interface OrdersQueryParams {
     productsIds?: string[];
 }
 
-interface ExtraProperties {
+interface GetOrdersReqExtraProperties {
     authToken: string;
     userInfo: {
         userId: number,
@@ -34,7 +34,7 @@ interface ExtraProperties {
     byProducts?: boolean;
 }
 
-type GetOrdersRequest = Request<{},{},{},OrdersQueryParams> & ExtraProperties;
+type GetOrdersRequest = Request<{},{},{},OrdersQueryParams> & GetOrdersReqExtraProperties;
 
 export { 
     OrderCreateOptions,

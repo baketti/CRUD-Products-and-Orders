@@ -9,7 +9,7 @@ export function generateJWT(payload: UserInfo):string {
         PRIVATE_KEY, 
         { 
             algorithm: "RS256",
-            expiresIn: "10m"
+            expiresIn: 600//10min
         },
     )
     return token;

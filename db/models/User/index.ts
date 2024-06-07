@@ -2,13 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import { UserAttributes,UserCreationAttributes } from './interfaces';
 import { UserRoles } from '../../../lib/interfaces';
 
-  class User extends Model<UserAttributes, UserCreationAttributes>{
-/*     public name!:string;
-    public surname!:string;
-    public email!:string;
-    public password!:string;
-    public role!: UserRoles; */
-  }
+  class User extends Model<UserAttributes, UserCreationAttributes>{}
 
   const UserAttributes = {
     id:{

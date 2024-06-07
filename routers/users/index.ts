@@ -77,7 +77,7 @@ router.put('/me',checkBody,putUserValidation, async (
     }
 });
 
-router.delete('/me',checkIdParam, async (req, res) => {
+router.delete('/me', async (req, res) => {
     const { userId } = req.session;
     try {
         const deleted_row = await User.destroy<User>({ where: { id: userId } }); 

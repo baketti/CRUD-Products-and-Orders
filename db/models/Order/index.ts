@@ -2,9 +2,7 @@ import { DataTypes } from 'sequelize';
 import { Model } from 'sequelize'
 import { OrderAttributes,OrderCreationAttributes } from './interfaces';
 
-class Order extends Model<OrderAttributes, OrderCreationAttributes> {
-    //public userId!: number;
-}
+class Order extends Model<OrderAttributes, OrderCreationAttributes> {}
 
 const OrderAttributes = {
         id:{
@@ -31,6 +29,4 @@ export {
     Order,
     OrderAttributes,
     OrderOptions
-}
-
-    
+}    

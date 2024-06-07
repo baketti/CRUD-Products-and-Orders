@@ -6,33 +6,36 @@ import { router as productRouter } from './routers/products';
 import { router as orderRouter } from './routers/orders';
 import { router as authRouter } from './routers/authentication';
 import { initStruct } from './db/init-struct';
-import { checkUserAuthentication, errorHandler } from './middlewares';
+import { checkUserAuthentication, errorHandler, routeNotFoundHandler } from './middlewares';
 import { UserRoles } from './lib/interfaces';
-import { checkAuthtHeader, checkBearerToken, checkUserRole } from './middlewares/auth';
+import { checkAuthorizationHeader, checkBearerToken, checkUserRole } from './middlewares/auth';
 
 const app = express();
 app.use(express.json());
 
 app.use(session({
         secret: process.env.SESSION_KEY || "my-super-secret-key",
-        cookie: { maxAge: 60000 * 10 },//10min
+        cookie: { 
+            maxAge: 60000 * 10//10min
+        },
         resave: false,
         saveUninitialized: true
     })
 );
 
-app.use(authRouter);
+app.use('/api',authRouter);
 app.use(checkUserAuthentication);
 
-app.use('/users',userRouter);
-app.use('/products',productRouter);
-app.use('/orders',orderRouter);
+app.use('/api/users',userRouter);
+app.use('/api/products',productRouter);
+app.use('/api/orders',orderRouter);
 
-app.use('/admin',checkAuthtHeader);
-app.use('/admin',checkBearerToken);
-app.use('/admin',checkUserRole);
-app.use('/admin',adminRouter);
+app.use('/api/admin',checkAuthorizationHeader);
+app.use('/api/admin',checkBearerToken);
+app.use('/api/admin',checkUserRole);
+app.use('/api/admin',adminRouter);
 
+app.use('*', routeNotFoundHandler);
 app.use(errorHandler);
 
 initStruct().then(() => {
@@ -51,7 +54,8 @@ export { app };
 declare module 'express-session' {
     export interface Session {
         userId: number;
-        userRole: 'admin' | 'user'; 
+        userRole: 'admin' | 'user';
+        email: string; 
     }
 }
 

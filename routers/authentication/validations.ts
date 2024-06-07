@@ -12,6 +12,13 @@ export function checkAuthBody(req: Request, res: Response, next: NextFunction) {
         };
         next(error);
         return;
+    }else if(req.session?.email === email){
+        const error: IError = {
+            message: "You are already logged in!",
+            status: StatusCodes.OK
+        };
+        next(error);
+        return;
     }
     else {
         next();

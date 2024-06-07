@@ -116,8 +116,7 @@ router.put('/:id', async (req,res) => {
         message:"Orders cannot be updated! Delete it and create a new one instead."
     });
 });
-//TODO: UTENTE CORRENTE PUO ELIMINARE IL SUO ORDINE MA NON QUELLO DEGLI ALTRI
-//TUTTI GLI ORDINI POSSONO ESSERE ELIMINATI SOLO DALL'ADMIN
+
 router.delete('/:id',checkIdParam, async (req, res) => {
     const { id } = req.params;
     try {

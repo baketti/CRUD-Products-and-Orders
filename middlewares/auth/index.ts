@@ -1,16 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { IError } from "../../lib/interfaces";
+import { IError, UserInfo } from "@/lib/interfaces";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import path from "path";
-import { UserRoles } from "../../lib/interfaces";
+import { UserRoles } from "@/lib/interfaces";
 
 const PUBLIC_KEY = fs.readFileSync(path.resolve("jwtRS256.key.pub"));
 
-export const checkAuthtHeader = (req: Request, res: Response, next: NextFunction) => {
-    console.log("checkAuthtHeader", req.headers.authorization);
-    if (req.headers.authorization) {
+export const checkAuthorizationHeader = (req: Request, res: Response, next: NextFunction) => {
+    if (req.headers.authorization && req.session.userRole === UserRoles.ADMIN) {
+        if(!req.headers.authorization.startsWith("Bearer ")){
+            const error : IError = {
+                status: StatusCodes.UNAUTHORIZED, 
+                message: "Invalid authorization header, it should be a Bearer token!"
+            } 
+            next(error)
+        }
         req.authToken = req.headers.authorization.split(" ")[1]
         next()
     } else {
@@ -24,9 +30,20 @@ export const checkAuthtHeader = (req: Request, res: Response, next: NextFunction
 
 export const checkBearerToken = (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log("checkBearerToken", req.authToken);
         let token = req.authToken
-        let decodedtoken = jwt.verify(token, PUBLIC_KEY)
+        let decodedtoken = jwt.verify(token, PUBLIC_KEY,(err: any,user:UserInfo)=>{
+            if(err){
+                if(err.name === "TokenExpiredError"){
+                    return res.status(StatusCodes.FORBIDDEN).json({
+                        message: "Token expired"
+                    })
+                }
+                return res.status(StatusCodes.FORBIDDEN).json({
+                    message: "Invalid token"
+                })
+            }
+            return user
+        })
         req.userInfo = decodedtoken
         next()
     }catch (err) {
@@ -39,11 +56,10 @@ export const checkBearerToken = (req: Request, res: Response, next: NextFunction
 }
 
 export const checkUserRole = (req: Request, res: Response, next: NextFunction) => {
-    console.log("checkUserRole", req.userInfo);
     //UserRole can be only ADMIN because the token is provided only to admins
     //Is a general middleware that can be used in all the routes that need to check the user role in future
     //It's one more security check
-    if (req.userInfo && req.userInfo.userRole === UserRoles.ADMIN) {
+    if (req.userInfo.userRole === UserRoles.ADMIN) {
         next()
     } else {
         const error : IError = {

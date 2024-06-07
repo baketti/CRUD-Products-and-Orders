@@ -1,7 +1,7 @@
 # CRUD PRODUCTS AND ORDERS
 # Node.js REST API
 
-This is a REST API built with Node.js, Express, and Sequelize. It performs CRUD operations on entities such as products and orders. You can view all orders and filter them by date and the products they contain.
+This is a REST API built with Node.js, Express, and Sequelize. It performs CRUD operations on entities such as products and orders. You can view all orders and filter them by date and the products they contain. The API includes also basic authentication and authorization for admin users only, utilizing JWT with asymmetric encryption using a public and a private key. The keys are included in the repository for ease of testing, though it's advised that in production, the private key must be kept secure and, surely, not exposed. Note that this implementation is basic and for demo purposes only, not suitable for production.
 
 ## Technologies and Libraries Used
 
@@ -12,7 +12,8 @@ This is a REST API built with Node.js, Express, and Sequelize. It performs CRUD 
 - bcrypt
 - dotenv
 - http-status-codes
-- typescript
+- Typescript
+- Postman
 
 ## Getting Started
 
@@ -36,12 +37,12 @@ You need to have Node.js, npm and MySQL installed on your machine.
 
 3. Create a .env file in the root directory and add the following environment variables:
 ```bash
-    DB_USER='root'
-    DB_PASS='root'
-    DB_NAME='agency'
-    DB_HOST='localhost'
-    DB_PORT=3306
-    PORT=3000
+    DB_USER=
+    DB_PASS=
+    DB_NAME=
+    DB_HOST=
+    DB_PORT=
+    PORT=
 ```
 Replace the values with your MySQL credentials and database details (the default port number for MySQL is 3306).
 
@@ -50,15 +51,18 @@ Replace the values with your MySQL credentials and database details (the default
     npm run "TASK create-test-data"
 ```
 
+This command will create tables populated with some data(products,users and some orders) to start testing the API.
+
 5. Start the server
 ```bash
     npm start
 ```
 Now, you can start testing the API endpoints using a tool like Postman.
+The first step will be, for sure, authenticate using an existing user or admin account to proceed with requests, or register using custom credentials. Below, you can see the routes.
 
 ## API Endpoints
 
-The API can be accessed at `http://localhost:{{PORT}}/api/`.
+The API can be accessed at `http://localhost:{{PORT}}/api`.
 Please replace {{PORT}} with the actual port number your application is running on.
 
 ### Authentication

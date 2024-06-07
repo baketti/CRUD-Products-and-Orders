@@ -46,6 +46,14 @@ export function checkBody(req:Request,res:Response,next:NextFunction) {
   }
 }
 
+export function routeNotFoundHandler(req:Request,res:Response,next:NextFunction){
+  let error: IError = {
+    status: StatusCodes.NOT_FOUND,
+    message: "This route does not exist!"
+  }
+  next(error)
+}
+
 export function errorHandler(err: IError,req:Request,res:Response,next:NextFunction){
   res.status(
     err.status || StatusCodes.INTERNAL_SERVER_ERROR 

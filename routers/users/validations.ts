@@ -1,8 +1,8 @@
 import { body, validationResult } from 'express-validator';
-import { UserRoles } from '../../lib/interfaces';
+import { UserRoles } from '@/lib/interfaces';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { IError } from '../../lib/interfaces';
+import { IError } from '@/lib/interfaces';
 
 export const checkPostUserBody = [
   body('name').exists().withMessage('Name is required'),

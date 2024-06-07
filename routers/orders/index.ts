@@ -29,7 +29,7 @@ router.post('/',
             const { productsIds } = req.body;
             const productQuantities = productsIds.reduce((quantities, productId) => {
                 if (!quantities[productId]) {
-                quantities[productId] = 0;
+                    quantities[productId] = 0;
                 }
                 quantities[productId]++;
                 return quantities;
@@ -39,6 +39,7 @@ router.post('/',
             await Promise.all(Object.keys(productQuantities).map(async(productId) => {
                 const product = await Product.findByPk<Product>(productId);
                 //OrderId, ProductId, product_quantity will be added to the junction table
+                // @ts-ignore
                 await order.addProducts(product, { 
                     through: {
                         product_quantity: productQuantities[productId] 
@@ -89,7 +90,7 @@ router.put('/me', async (req,res) => {
     });
 });
 
-router.delete('/me', checkIdParam, async (req, res) => {
+router.delete('/me/:id', checkIdParam, async (req, res) => {
     const { id } = req.params;
     const { userId } = req.session;
     try {
