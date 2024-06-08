@@ -9,15 +9,14 @@
     "moduleResolution": "node",     
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-        "@/*": ["./*"]
+        "@/*": ["*"]
     },
   },
   "lib": ["es2022"],
   "include": [
-    "lib/**/*",
-    "**/*.ts",
-    "*.ts"
+    "src/lib/**/*",
+    "src/**/*.ts" 
   ], 
 }
