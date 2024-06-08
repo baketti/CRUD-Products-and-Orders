@@ -52,8 +52,8 @@ async function putUsersByUserId(
         }
         const user = await User.findByPk<User>(id)
         return res.status(StatusCodes.OK).json({
-            message: `User with id ${id} updated successfully!`,
             user: user,
+            message: `User with id ${id} updated successfully!`,
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

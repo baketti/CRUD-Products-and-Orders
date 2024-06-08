@@ -113,7 +113,7 @@ async function deleteAdminOrdersByOrderId(req, res){
         const deleted_row = await Order.destroy<Order>({ where: { id: id } }); 
         if(!deleted_row){
             res.status(StatusCodes.NOT_FOUND).json({
-                message: 'This order does not exists!'
+                message: 'This order does not exist!'
             });
             return;
         }

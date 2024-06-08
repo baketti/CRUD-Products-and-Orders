@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { router as userRouter } from "./users";
-import { router as productRouter } from "./products";
-import { router as orderRouter } from "./orders";
+import { router as usersRouter } from "./users";
+import { router as productsRouter } from "./products";
+import { router as ordersRouter } from "./orders";
 
 const router = Router();
 
-router.use('/users', userRouter);
-router.use('/products', productRouter);
-router.use('/orders', orderRouter);
+router.use('/users', usersRouter);
+router.use('/products', productsRouter);
+router.use('/orders', ordersRouter);
 
 export { router };

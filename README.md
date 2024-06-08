@@ -1,5 +1,8 @@
 # CRUD PRODUCTS AND ORDERS
 # Node.js REST API
+# Authentication and authorization simple demo
+
+## Final exam for Start2Impact University Node.js course
 
 This is a REST API built with Node.js, Express, and Sequelize. It performs CRUD operations on entities such as products and orders. You can view all orders and filter them by date and the products they contain. The API includes also basic authentication and authorization for admin users only, utilizing JWT with asymmetric encryption using a public and a private key. The keys are included in the repository for ease of testing, though it's advised that in production, the private key must be kept secure and, surely, not exposed. Note that this implementation is basic and for demo purposes only, not suitable for production.
 
@@ -68,7 +71,26 @@ Please replace {{PORT}} with the actual port number your application is running 
 ### Authentication
 
 - `POST /users/register`: Register a new user. Returns the registered user object.
+Request body must include the following fields (description is optional):
+
+```json
+{
+  "name"
+  "surname"
+  "email"
+  "password"
+  "role"
+}
+```
 - `POST /login`: Login a user. Returns a JWT token if it's an admin.
+Request body:
+```json
+{
+  "email"
+  "password"
+}
+```
+- `GET /logout`: Logout a user. 
 
 ### Products
 
@@ -77,9 +99,18 @@ Regular users:
 - `GET /products`: Fetch all products. Returns an array of products.
 - `GET /products/:id`: Fetch a single product by its ID. Returns a product object.
 
-Admin users (include JWT token in the Authorization header with the format `Bearer {token}`):
+Admin users (include JWT in the Authorization header with the auth type Bearer Token):
 
 - `POST /admin/products`: Create a new product. Returns the created product object.
+Request body must include the following fields (description is optional):
+```json
+{
+  "name"
+  "price"
+  "startDate"
+  "endDate"
+}
+```
 - `PUT /admin/products/:id`: Update a product by its ID. Returns the updated product object.
 - `DELETE /admin/products/:id`: Delete a product by its ID.
 
@@ -95,11 +126,19 @@ Each product response object is structured as follows:
   "endDate"
 }
 ```
+Note: Admins can do everything they want with products!
+
 ###  Orders
 
 Regular users:
 
 - `POST /orders`: Create a new order. Returns the created order object.
+Request body must include the following fields: 
+```json
+{
+  "productsIds":[]
+}
+```
 - `GET /orders/me`: Fetch all orders of the logged-in user. Returns an array of order objects.
 
 Admin users (include JWT token in the Authorization header with the format `Bearer {token}`):
@@ -139,6 +178,7 @@ Admin users (include JWT token in the Authorization header with the format `Bear
 }
 ```
 Note: The PUT operation is not supported for orders, because orders cannot be updated but only deleted.
+Note: Admins cannot make orders, only users can do!
 
 ### Users
 
@@ -153,6 +193,7 @@ Admin users (include JWT token in the Authorization header with the format `Bear
 - `GET /admin/users/:id`: Fetch a single user by its ID. Returns a user object.
 - `PUT /admin/users/:id`: Update a user by its ID. Returns the updated user object.
 - `DELETE /admin/users/:id`: Delete a user by its ID. Returns a confirmation message.
+Note: Admins cannot create users but they can handle everything of them. Only users can register themselves!
 
 ### Contact
 Emanuele Giovanni Bachetti - e.bachetti1997@gmail.com

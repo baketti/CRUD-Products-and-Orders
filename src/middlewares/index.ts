@@ -3,16 +3,37 @@ import { StatusCodes } from 'http-status-codes';
 import { IError } from '../lib/interfaces';
 
 export function checkUserAuthentication(req: Request, res: Response, next: NextFunction){
-    if (!req.session || !req.session.userId) {
+  if(!req.session || !req.session.userId) {
         const error: IError = {
             status: StatusCodes.UNAUTHORIZED,
-            message: "You are not authorized! Please login first!"
+            message: "You are not authorized! Please, log in first!"
         }
         return next(error);
-    } else {
+    }else {
       next();
     }
   }
+
+export function checkSessionExpire(req: Request, res: Response, next: NextFunction){
+  try{
+    const expire = 60000 * 10;
+    const now = Date.now();
+    const sessionTime = now - req.session.timestamp;
+    if (sessionTime > expire) {
+      //It's not necessary to destroy the session because it's handled by the session itself thanks to the maxAge option setted
+        return res.status(StatusCodes.UNAUTHORIZED).send({
+          message:"Session is expired! Please log in again."
+        });
+    }
+    next();
+  }catch(err){
+    let error: IError = {
+      status: StatusCodes.BAD_REQUEST,
+      message: err
+    };
+    next(error);
+  }
+}
 
 export function checkIdParam(req:Request,res:Response,next:NextFunction) {
   try{

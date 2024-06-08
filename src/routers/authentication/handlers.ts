@@ -21,6 +21,7 @@ async function postUserLoginAuth(req ,res) {
             req.session.userId = currentId;
             req.session.userRole = user.getDataValue('role') as "admin" | "user";
             req.session.email = email;
+            req.session.timestamp = Date.now();
             const { userId, userRole } = req.session;
             let token;
             if(userRole === UserRoles.ADMIN){

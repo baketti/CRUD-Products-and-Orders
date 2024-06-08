@@ -7,7 +7,6 @@ import { getAllProductsIds } from '@/db/models/Product';
 
 export const checkPostOrderBody = [
   body('productsIds').exists().withMessage('No products in the order'),
-  // Handle validation errors
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -24,7 +23,6 @@ export const checkPostOrderBody = [
 export const postOrderValidation = [
     body('productsIds').isArray().withMessage('Products must be an array'),
     body('productsIds.*').isNumeric().withMessage('Product ID must be a number'),
-    // Handle validation errors
     (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {

@@ -42,8 +42,8 @@ async function putAdminProductsByProductId(
         }
         const product = await Product.findByPk<Product>(id);
         return res.status(StatusCodes.OK).json({
-            message: `Product with id ${id} updated successfully!`,
             product: product,
+            message: `Product with id ${id} updated successfully!`,
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

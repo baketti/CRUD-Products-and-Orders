@@ -4,6 +4,6 @@ import { postUserLoginAuth, getUserLogout } from './handlers';
 
 export const router = Router();
 
-router.post('/login', checkAuthBody,checkAuthPassword, postUserLoginAuth);
+router.post('/login', checkAuthBody, checkAuthPassword, postUserLoginAuth);
 
 router.get('/logout', getUserLogout);
