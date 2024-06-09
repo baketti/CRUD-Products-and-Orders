@@ -45,7 +45,7 @@ You need to have Node.js, npm and MySQL installed on your machine.
     DB_NAME=
     DB_HOST=
     DB_PORT=
-    PORT=
+    API_PORT=
 ```
 Replace the values with your MySQL credentials and database details (the default port number for MySQL is 3306).
 
