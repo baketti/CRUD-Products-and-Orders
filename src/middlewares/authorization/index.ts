@@ -18,7 +18,7 @@ export const checkAuthorizationHeader = (req: Request, res: Response, next: Next
             next(error)
         }
         const jwt = req.headers.authorization.split(" ")[1];
-        globalStore.setData("authToken", jwt);
+        globalStore.setData("authToken", jwt);//useful to carry the token
         next()
     } else {
         const error : IError = {

@@ -60,7 +60,6 @@ export { app };
 /* Temporarily extending 'express-session' module Session interface to include custom properties.
  Sorry, I know this approach is not the best, it's only a quick fix.
  Future refactoring should aim for the right solution. */
-
 declare module 'express-session' {
     export interface Session {
         userId: number;
