@@ -70,7 +70,7 @@ Below, you can see all the available routes.
 ## API Endpoints
 
 The API can be accessed at `http://localhost:{{PORT}}/api`.
-Please replace {{PORT}} with the actual port number your application is running on.
+Please replace {{PORT}} with the port number you want your application will run on.
 
 ### Authentication
 
@@ -135,12 +135,13 @@ Request body must include the following fields:
 
 Admin users (include JWT in the Authorization header with the auth type Bearer Token):
 
-- `GET /admin/orders`: Fetch all orders. Returns an array of orders. This endpoint can be filtered using query string parameters. 
-  - `from`: If provided alone, it allows searching for orders based on the insertion date and orders with a createdAt field matching the 'from' date will be returned.
+- `GET /admin/orders`: Fetch all orders. Returns an array of orders. This endpoint can perform filtered search using query string parameters. 
+  - `from`: If provided alone, it allows searching for orders based on the insertion date: orders with a createdAt field matching the 'from' date will be returned.
   - `to`: It doesn't work alone. If provided in conjunction with `from`, it allows searching for orders within a specific date range.
   - `productsIds`: If provided it will be an array of product IDs(one or more). It allows searching for all orders that contain the products specified in the query parameters.
 
   Note: You cannot search by both date and products. You can only perform one kind of filtered search at a time.
+  
 - `GET admin/orders/:id`: Fetch a single order by its ID. Returns an order object.
 - `DELETE admin/orders/:id`: Delete an order by its ID.
 
