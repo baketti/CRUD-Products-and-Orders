@@ -1,3 +1,4 @@
+import { Response, Request } from "express";
 import { StatusCodes } from "http-status-codes";
 import { Order } from "@/db/models/Order";
 import { Product } from "@/db/models/Product";
@@ -5,7 +6,7 @@ import { GetOrdersRequest } from "@/lib/orders.interfaces";
 import { Op } from "sequelize";
 import { ProductOrder } from "@/db/models/ProductOrder";
 
-async function getAdminOrders(req: GetOrdersRequest, res) {
+async function getAdminOrders(req: GetOrdersRequest, res: Response) {
     try {
         if(!req.isFilteredSearch){
             const orders = await Order.findAll({
@@ -80,7 +81,7 @@ async function getAdminOrders(req: GetOrdersRequest, res) {
     }
 }
 
-async function getAdminOrdersByOrderId(req, res) {
+async function getAdminOrdersByOrderId(req:Request, res:Response) {
     const { id } = req.params;
     try {
         const order =  await Order.findByPk<Order>(id, {
@@ -101,13 +102,13 @@ async function getAdminOrdersByOrderId(req, res) {
     }
 }
 
-async function putAdminOrdersByOrderId(req,res){
+async function putAdminOrdersByOrderId(req:Request, res:Response){
     return res.status(StatusCodes.METHOD_NOT_ALLOWED).json({
         message:"Orders cannot be updated! Delete it and create a new one instead."
     });
 }
 
-async function deleteAdminOrdersByOrderId(req, res){
+async function deleteAdminOrdersByOrderId(req:Request, res:Response){
     const { id } = req.params;
     try {
         const deleted_row = await Order.destroy<Order>({ where: { id: id } }); 
@@ -118,7 +119,7 @@ async function deleteAdminOrdersByOrderId(req, res){
             return;
         }
         return res.status(StatusCodes.OK).json({
-            message: `Order deleted successfully!`
+            message: `Order with id ${id} deleted successfully!`
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

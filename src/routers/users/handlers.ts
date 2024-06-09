@@ -33,6 +33,8 @@ async function getUsersMe(req: Request, res: Response){
     try {
         const user = await User.findByPk<User>(userId);
         if (!user) {
+            //This cannot never happen, because the user is authenticated
+            //It's only one more check, but it can be avoided
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "User not found"
             });

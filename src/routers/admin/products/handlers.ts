@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { 
     PostProductBodyRequest, 
     ProductCreateOptions, 
@@ -9,7 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import { addProductIdToGlobalStore } from "@/utils/global-store"
 
 async function postAdminProducts(
-    req: Request<{},{},PostProductBodyRequest>, res) {
+    req: Request<{},{},PostProductBodyRequest>, res: Response) {
     try {
         const new_product = await Product.create<Product,ProductCreateOptions>({
             name: req.body.name,
@@ -31,7 +31,7 @@ async function postAdminProducts(
 }
 
 async function putAdminProductsByProductId(
-    req: Request<{ id:any },{},PutProductBodyRequest>, res){
+    req: Request<{ id:any },{},PutProductBodyRequest>, res: Response){
     const { id } = req.params;
     try {
         const updated_product = await Product.update<Product>(req.body, {
@@ -54,7 +54,7 @@ async function putAdminProductsByProductId(
     }
 };
 
-async function deleteAdminProductsByProductId(req, res){
+async function deleteAdminProductsByProductId(req:Request, res:Response){
     const { id } = req.params;
     try {
         const deleted_row = await Product.destroy<Product>(({ where: { id: id } }))

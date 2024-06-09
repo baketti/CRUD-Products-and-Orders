@@ -1,10 +1,10 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { PostOrderBodyRequest,OrderCreateOptions } from '@/lib/orders.interfaces';
 import { Order } from '@/db/models/Order';
 import { Product } from '@/db/models/Product';
 
-async function postOrders (req: Request <{},{}, PostOrderBodyRequest>,res) {    
+async function postOrders (req: Request <{},{}, PostOrderBodyRequest>,res: Response) {    
     try {
         //ORDER CREATION
         const order = await Order.create<Order,OrderCreateOptions>({
@@ -47,20 +47,20 @@ async function postOrders (req: Request <{},{}, PostOrderBodyRequest>,res) {
     }
 }
 
-async function getOrdersMe(req, res) {
+async function getOrdersMe(req: Request, res: Response) {
     const { userId } = req.session;
     try {
-        const order =  await Order.findAll<Order>({
+        const orders =  await Order.findAll<Order>({
             where: { userId: userId },
             include: [{ model: Product }]
         });
-        if (!order) {
+        if (!orders) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "You don't have orders yet"
             });
         }
         return res.status(StatusCodes.OK).json({
-            order: order,       
+            orders: orders,       
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -69,13 +69,13 @@ async function getOrdersMe(req, res) {
     }
 }
 
-async function putOrdersMe(req,res) {
+async function putOrdersMe(req: Request, res: Response) {
     return res.status(StatusCodes.METHOD_NOT_ALLOWED).json({
         message:"Orders cannot be updated! Delete it and create a new one instead."
     });
 }
 
-async function deleteOrdersMe(req, res) {
+async function deleteOrdersMe(req: Request, res: Response) {
     const { id } = req.params;
     const { userId } = req.session;
     try {
@@ -89,7 +89,7 @@ async function deleteOrdersMe(req, res) {
             return;
         }
         return res.status(StatusCodes.OK).json({
-            message: `Order deleted successfully!`
+            message: `Your order was deleted successfully!`
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

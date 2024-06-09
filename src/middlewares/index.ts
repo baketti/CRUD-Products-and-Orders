@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { IError } from '../lib/interfaces';
+import { globalStore } from '@/utils/global-store';
 
 export function checkUserAuthentication(req: Request, res: Response, next: NextFunction){
   if(!req.session || !req.session.userId) {
@@ -16,11 +17,18 @@ export function checkUserAuthentication(req: Request, res: Response, next: NextF
 
 export function checkSessionExpire(req: Request, res: Response, next: NextFunction){
   try{
+    const isLogged = globalStore.getData('isLogged');
+    if(!isLogged) {
+      return next();
+    }
     const expire = 60000 * 10;
     const now = Date.now();
-    const sessionTime = now - req.session.timestamp;
+    const sessionTimestamp = globalStore.getData('sessionTimestamp');
+    const sessionTime = now - sessionTimestamp;
     if (sessionTime > expire) {
-      //It's not necessary to destroy the session because it's handled by the session itself thanks to the maxAge option setted
+      //It's not necessary to destroy the session because it's handled by the session itself
+      //This is only a check to inform the user that the session is expired
+        globalStore.setData('isLogged', false);
         return res.status(StatusCodes.UNAUTHORIZED).send({
           message:"Session is expired! Please log in again."
         });

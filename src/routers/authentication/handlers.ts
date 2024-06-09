@@ -1,9 +1,11 @@
+import { Request, Response } from 'express';
 import { User } from '@/db/models/User';
 import { generateJWT } from '@/utils/generate-jwt';
 import { StatusCodes } from 'http-status-codes';
 import { UserRoles } from '@/lib/interfaces';
+import { globalStore } from '@/utils/global-store';
 
-async function postUserLogin(req ,res) {
+async function postUserLogin(req:Request, res:Response) {
     const { email } = req.body;
     try {
         const user = await User.findOne({
@@ -21,7 +23,8 @@ async function postUserLogin(req ,res) {
             req.session.userId = currentId;
             req.session.userRole = user.getDataValue('role') as "admin" | "user";
             req.session.email = email;
-            req.session.timestamp = Date.now();
+            globalStore.setData('isLogged', true);
+            globalStore.setData('sessionTimestamp', Date.now());
             const { userId, userRole } = req.session;
             let token;
             if(userRole === UserRoles.ADMIN){
@@ -51,7 +54,7 @@ async function postUserLogin(req ,res) {
     }
 }
 
-async function getUserLogout(req, res) {
+async function getUserLogout(req:Request, res:Response) {
     if (!req.session?.userId) {
         return res.status(StatusCodes.METHOD_NOT_ALLOWED).json({
             message: "You're already logged out!"
@@ -64,6 +67,7 @@ async function getUserLogout(req, res) {
             });
         }
         res.clearCookie('connect.sid');
+        globalStore.setData('isLogged', false);
         res.status(StatusCodes.OK).json({
             message: "You're logged out successfully!"
         });

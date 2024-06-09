@@ -1,9 +1,9 @@
-import { Request, Router } from "express";
+import { Request, Response, Router } from "express";
 import { User } from "@/db/models/User";
 import { StatusCodes } from "http-status-codes";
 import { PutUserBodyRequest } from "@/lib/users.interfaces";
 
-async function getUsers(req, res){
+async function getUsers(req:Request, res:Response){
     try {
         const users = await User.findAll<User>();
         return res.status(StatusCodes.OK).json({
@@ -16,7 +16,7 @@ async function getUsers(req, res){
     }
 }
 
-async function getUsersByUserId(req, res){
+async function getUsersByUserId(req:Request, res:Response){
     const { id } = req.params;
     try {
         const user = await User.findByPk<User>(id);
@@ -37,7 +37,7 @@ async function getUsersByUserId(req, res){
 
 async function putUsersByUserId(
     req: Request<{id:any},{},PutUserBodyRequest>, 
-    res
+    res:Response
 ){
     const { id } = req.params;
     try {
@@ -62,7 +62,7 @@ async function putUsersByUserId(
     }
 }
 
-async function deleteUsersByUserId(req, res) {
+async function deleteUsersByUserId(req:Request, res:Response) {
     const { id } = req.params;
     try {
         const deleted_row = await User.destroy<User>({ where: { id: id } }); 
@@ -73,7 +73,7 @@ async function deleteUsersByUserId(req, res) {
             return;
         }
         return res.status(StatusCodes.OK).json({
-            message: `User deleted successfully!`
+            message: `User with id ${id} deleted successfully!`
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

@@ -1,7 +1,8 @@
+import { Request, Response } from "express";
 import { Product } from "@/db/models/Product";
 import { StatusCodes } from 'http-status-codes';
 
-async function getProducts(req, res) {
+async function getProducts(req: Request, res: Response) {
     try {
         const products = await Product.findAll<Product>()
         return res.status(StatusCodes.OK).json({
@@ -14,7 +15,7 @@ async function getProducts(req, res) {
     }
 }
 
-async function getProductsByProductId(req, res) {
+async function getProductsByProductId(req: Request, res: Response) {
     const { id } = req.params;
     try {
         const product = await Product.findByPk<Product>(id);

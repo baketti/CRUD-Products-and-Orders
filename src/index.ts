@@ -34,8 +34,8 @@ app.use(session({
 );
 
 app.use('/api',authRouter);
-app.use(checkUserAuthentication);
 app.use(checkSessionExpire);
+app.use(checkUserAuthentication);
 
 app.use('/api/users',userRouter);
 app.use('/api/products',productRouter);
@@ -58,15 +58,13 @@ initStruct().then(async () => {
 export { app };
 
 /* Temporarily extending 'express-session' module Session interface to include custom properties.
- Sorry, I know this approach is not the best, it's only a quick fix for type augmentation.
- TypeScript was not required for this project so I hope you appreciate my initiative.
- Future refactoring should aim for a more modular and maintainable solution. */
+ Sorry, I know this approach is not the best, it's only a quick fix.
+ Future refactoring should aim for the right solution. */
 
 declare module 'express-session' {
     export interface Session {
         userId: number;
         userRole: 'admin' | 'user';
         email: string; 
-        timestamp: number;
     }
 }

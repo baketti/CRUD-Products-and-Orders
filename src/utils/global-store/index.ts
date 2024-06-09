@@ -1,7 +1,7 @@
 import { Product, getAllProductsIds } from "@/db/models/Product";
 import { UserInfo } from "@/lib/interfaces";
 
-type GlobalStoreData = number[] | string | UserInfo;
+type GlobalStoreData = boolean | number | number[] | string | UserInfo;
 
 //SINGLETON CLASS TO STORE GLOBAL DATA
 class GlobalDataStore {

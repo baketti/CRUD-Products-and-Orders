@@ -65,7 +65,7 @@ This command will create tables populated with some data(products,users and some
 - The first step is, for sure, to authenticate using an existing user or admin account to proceed with   requests, or register using custom credentials.
 - If you choose an existing one, you can find its credentials into the users folder within /tasks/data. 
 
-Below, you can see all the routes available.
+Below, you can see all the available routes.
 
 ## API Endpoints
 
@@ -133,13 +133,14 @@ Request body must include the following fields:
 ```
 - `GET /orders/me`: Fetch all orders of the logged-in user. Returns an array of order objects.
 
-Admin users (include JWT token in the Authorization header with the format `Bearer {token}`):
+Admin users (include JWT in the Authorization header with the auth type Bearer Token):
 
 - `GET /admin/orders`: Fetch all orders. Returns an array of orders. This endpoint can be filtered using query string parameters. 
-  - `from`: If provided alone, it allows searching for orders based on the insertion date.
-  - `to`: If provided in conjunction with `from`, it allows searching for orders within a specific date range.
+  - `from`: If provided alone, it allows searching for orders based on the insertion date and orders with a createdAt field matching the 'from' date will be returned.
+  - `to`: It doesn't work alone. If provided in conjunction with `from`, it allows searching for orders within a specific date range.
   - `productsIds`: If provided it will be an array of product IDs(one or more). It allows searching for all orders that contain the products specified in the query parameters.
-  Note: You cannot search by both date and products. You can only perform one type of filtered search at a time.
+
+  Note: You cannot search by both date and products. You can only perform one kind of filtered search at a time.
 - `GET admin/orders/:id`: Fetch a single order by its ID. Returns an order object.
 - `DELETE admin/orders/:id`: Delete an order by its ID.
 
@@ -190,7 +191,7 @@ Request body must include the following fields:
 - `GET /users/me`: Fetch the logged-in user's details. Returns a user object.
 - `PUT /users/me`: Update the logged-in user's details. Returns the updated user object.
 
-Admin users (include JWT token in the Authorization header with the format `Bearer {token}`):
+Admin users (include JWT in the Authorization header with the auth type Bearer Token):
 
 - `GET /admin/users`: Fetch all users. Returns an array of user objects.
 - `GET /admin/users/:id`: Fetch a single user by its ID. Returns a user object.
