@@ -3,8 +3,8 @@ import { StatusCodes } from "http-status-codes";
 import { IError, UserInfo } from "@/lib/interfaces";
 import jwt from "jsonwebtoken";
 import fs from "fs";
-import path from "path";
 import { UserRoles } from "@/lib/interfaces";
+import { globalStore } from "@/utils/global-store";
 
 const PUBLIC_KEY = fs.readFileSync("./src/keys/jwtRS256.key.pub");
 
@@ -17,7 +17,8 @@ export const checkAuthorizationHeader = (req: Request, res: Response, next: Next
             } 
             next(error)
         }
-        req.authToken = req.headers.authorization.split(" ")[1]
+        const jwt = req.headers.authorization.split(" ")[1];
+        globalStore.setData("authToken", jwt);
         next()
     } else {
         const error : IError = {
@@ -30,7 +31,7 @@ export const checkAuthorizationHeader = (req: Request, res: Response, next: Next
 
 export const checkBearerToken = (req: Request, res: Response, next: NextFunction) => {
     try {
-        let token = req.authToken
+        let token = globalStore.getData("authToken");
         let decodedtoken = jwt.verify(token, PUBLIC_KEY,(err: any,user:UserInfo)=>{
             if(err){
                 if(err.name === "TokenExpiredError"){
@@ -44,7 +45,7 @@ export const checkBearerToken = (req: Request, res: Response, next: NextFunction
             }
             return user
         })
-        req.userInfo = decodedtoken
+        globalStore.setData("userInfo", decodedtoken);
         next()
     }catch (err) {
         const error : IError = {
@@ -55,11 +56,12 @@ export const checkBearerToken = (req: Request, res: Response, next: NextFunction
     }
 }
 
+//UserRole can be only ADMIN because the token is provided only to admins
+//Is a general middleware that can be used in all the routes that need to check the user role in future
+//At the moment it's one more security check
 export const checkUserRole = (req: Request, res: Response, next: NextFunction) => {
-    //UserRole can be only ADMIN because the token is provided only to admins
-    //Is a general middleware that can be used in all the routes that need to check the user role in future
-    //At the moment it's one more security check
-    if (req.userInfo.userRole === UserRoles.ADMIN) {
+    const userInfo: UserInfo = globalStore.getData("userInfo");
+    if (userInfo.userRole === UserRoles.ADMIN) {
         next()
     } else {
         const error : IError = {

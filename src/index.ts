@@ -18,6 +18,7 @@ import {
     checkBearerToken, 
     checkUserRole 
 } from './middlewares/authorization';
+import { initApplication } from './utils';
 
 const app = express();
 app.use(express.json());
@@ -48,20 +49,15 @@ app.use('/api/admin',adminRouter);
 app.use('*', routeNotFoundHandler);
 app.use(errorHandler);
 
-initStruct().then(() => {
-    app.listen(process.env.API_PORT, () => {
-      console.log(`
-        Server running on port ${process.env.API_PORT}\n        
-        http://localhost:${process.env.API_PORT}
-      `);
-    });
+initStruct().then(async () => {
+    await initApplication(app); 
 }).catch(err => {
     console.error("Failed to initialize the database structure:", err);
 });
 
 export { app };
 
-/* Temporarily extending 'express-session' and 'express' module interfaces to include custom properties.
+/* Temporarily extending 'express-session' module Session interface to include custom properties.
  Sorry, I know this approach is not the best, it's only a quick fix for type augmentation.
  TypeScript was not required for this project so I hope you appreciate my initiative.
  Future refactoring should aim for a more modular and maintainable solution. */
@@ -72,16 +68,5 @@ declare module 'express-session' {
         userRole: 'admin' | 'user';
         email: string; 
         timestamp: number;
-    }
-}
-
-declare module 'express' {
-    export interface Request {
-       authToken: string;
-       userInfo: {
-        userId: number,
-        userRole: UserRoles,
-        iat: number
-       };
     }
 }

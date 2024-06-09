@@ -3,7 +3,7 @@ import { generateJWT } from '@/utils/generate-jwt';
 import { StatusCodes } from 'http-status-codes';
 import { UserRoles } from '@/lib/interfaces';
 
-async function postUserLoginAuth(req ,res) {
+async function postUserLogin(req ,res) {
     const { email } = req.body;
     try {
         const user = await User.findOne({
@@ -52,6 +52,11 @@ async function postUserLoginAuth(req ,res) {
 }
 
 async function getUserLogout(req, res) {
+    if (!req.session?.userId) {
+        return res.status(StatusCodes.METHOD_NOT_ALLOWED).json({
+            message: "You're already logged out!"
+        });
+    }
     req.session.destroy(err => {
         if(err) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -66,6 +71,6 @@ async function getUserLogout(req, res) {
 }
 
 export {
-    postUserLoginAuth,
+    postUserLogin,
     getUserLogout,
 }

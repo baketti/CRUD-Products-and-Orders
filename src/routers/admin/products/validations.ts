@@ -31,8 +31,8 @@ export const postProductValidation = [
     body('name').isString().withMessage('Name must be a string'),
     body('price').isNumeric().withMessage('Price must be a number'),
     body('description').isString().withMessage('Description must be a string').optional(),
-    body('startDate').isDate().withMessage('StartDate must be a valid date'),
-    body('endDate').isDate().withMessage('EndDate must be a valid date'),
+    body('startDate').isDate().withMessage('StartDate must be a valid date: yyyy-mm-dd or yyyy/mm/dd'),
+    body('endDate').isDate().withMessage('EndDate must be a valid date: yyyy-mm-dd or yyyy/mm/dd'),
     body('endDate').custom((value, { req }) => {
       if (value && req.body.startDate && new Date(value) <= new Date(req.body.startDate)) {
         return false;
@@ -57,8 +57,8 @@ export const postProductValidation = [
     body('name').isString().withMessage('Name must be a string').optional(),
     body('price').isNumeric().withMessage('Price must be a number').optional(),
     body('description').isString().withMessage('Description must be a string').optional(),
-    body('startDate').isDate().withMessage('StartDate must be a valid date').optional(),
-    body('endDate').isDate().withMessage('EndDate must be a valid date').optional(),
+    body('startDate').isDate().withMessage('StartDate must be a valid date: yyyy-mm-dd or yyyy/mm/dd').optional(),
+    body('endDate').isDate().withMessage('EndDate must be a valid date: yyyy-mm-dd or yyyy/mm/dd').optional(),
     body('endDate').custom((value, { req }) => {
       if (value && req.body.startDate && new Date(value) <= new Date(req.body.startDate)) {
         return false;

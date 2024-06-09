@@ -1,10 +1,9 @@
-# CRUD PRODUCTS AND ORDERS
 # Node.js REST API
 # Authentication and authorization simple demo
 
 ## Final exam for Start2Impact University Node.js course
 
-This is a REST API built with Node.js, Express, and Sequelize. It performs CRUD operations on entities such as products and orders. You can view all orders and filter them by date and the products they contain. The API includes also basic authentication and authorization for admin users only, utilizing JWT with asymmetric encryption using a public and a private key. The keys are included in the repository for ease of testing, though it's advised that in production, the private key must be kept secure and, surely, not exposed. Note that this implementation is basic and for demo purposes only, not suitable for production.
+This is a REST API built with Node.js, Express, and Sequelize. It performs CRUD operations on entities such as products and orders. You can view all orders and filter them by date and the products they contain. The API includes also basic authentication and authorization for admin users only, with JWT asymmetric encryption using a public and a private key. The keys are included in the repository for ease of testing, though it's advised that, in production, the private key must be kept secure and, surely, not exposed. Note that this implementation is basic and for demo purposes only.
 
 ## Technologies and Libraries Used
 
@@ -37,8 +36,9 @@ You need to have Node.js, npm and MySQL installed on your machine.
 ```bash
    npm install
 ```
+3. Create your local MySQL database.
 
-3. Create a .env file in the root directory and add the following environment variables:
+4. Create a .env file in the root directory and add the following environment variables:
 ```bash
     DB_USER=
     DB_PASS=
@@ -49,19 +49,23 @@ You need to have Node.js, npm and MySQL installed on your machine.
 ```
 Replace the values with your MySQL credentials and database details (the default port number for MySQL is 3306).
 
-4. Run the script to create test data
+5. Run the script to create test data
 ```bash
     npm run "TASK create-test-data"
 ```
 
 This command will create tables populated with some data(products,users and some orders) to start testing the API.
 
-5. Start the server
+6. Start the server in development mode:
 ```bash
-    npm start
+    npm run dev
 ```
-Now, you can start testing the API endpoints using a tool like Postman.
-The first step will be, for sure, authenticate using an existing user or admin account to proceed with requests, or register using custom credentials. Below, you can see the routes.
+
+- Now, you can start testing the API endpoints using Postman or any other tool you like.
+- The first step is, for sure, to authenticate using an existing user or admin account to proceed with   requests, or register using custom credentials.
+- If you choose an existing one, you can find its credentials into the users folder within /tasks/data. 
+
+Below, you can see all the routes available.
 
 ## API Endpoints
 
@@ -70,18 +74,6 @@ Please replace {{PORT}} with the actual port number your application is running 
 
 ### Authentication
 
-- `POST /users/register`: Register a new user. Returns the registered user object.
-Request body must include the following fields (description is optional):
-
-```json
-{
-  "name"
-  "surname"
-  "email"
-  "password"
-  "role"
-}
-```
 - `POST /login`: Login a user. Returns a JWT token if it's an admin.
 Request body:
 ```json
@@ -126,7 +118,7 @@ Each product response object is structured as follows:
   "endDate"
 }
 ```
-Note: Admins can do everything they want with products!
+Note: Admins can do everything they want with products, but users can only watch!
 
 ###  Orders
 
@@ -146,7 +138,7 @@ Admin users (include JWT token in the Authorization header with the format `Bear
 - `GET /admin/orders`: Fetch all orders. Returns an array of orders. This endpoint can be filtered using query string parameters. 
   - `from`: If provided alone, it allows searching for orders based on the insertion date.
   - `to`: If provided in conjunction with `from`, it allows searching for orders within a specific date range.
-  - `productsIds`: An array of product IDs. It allows searching for all orders that contain the products specified in the query parameters.
+  - `productsIds`: If provided it will be an array of product IDs(one or more). It allows searching for all orders that contain the products specified in the query parameters.
   Note: You cannot search by both date and products. You can only perform one type of filtered search at a time.
 - `GET admin/orders/:id`: Fetch a single order by its ID. Returns an order object.
 - `DELETE admin/orders/:id`: Delete an order by its ID.
@@ -183,7 +175,18 @@ Note: Admins cannot make orders, only users can do!
 ### Users
 
 Regular users:
+- `POST /users/register`: Register a new user. Returns the registered user object.
+Request body must include the following fields:
 
+```json
+{
+  "name"
+  "surname"
+  "email"
+  "password"
+  "role"
+}
+```
 - `GET /users/me`: Fetch the logged-in user's details. Returns a user object.
 - `PUT /users/me`: Update the logged-in user's details. Returns the updated user object.
 
@@ -193,6 +196,7 @@ Admin users (include JWT token in the Authorization header with the format `Bear
 - `GET /admin/users/:id`: Fetch a single user by its ID. Returns a user object.
 - `PUT /admin/users/:id`: Update a user by its ID. Returns the updated user object.
 - `DELETE /admin/users/:id`: Delete a user by its ID. Returns a confirmation message.
+
 Note: Admins cannot create users but they can handle everything of them. Only users can register themselves!
 
 ### Contact

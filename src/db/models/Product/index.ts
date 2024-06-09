@@ -38,9 +38,9 @@ import { ProductAttributes, ProductCreationAttributes } from './interfaces';
     timestamps: false ,
   }
 
-  async function getAllProductsIds() {
-    const products = await Product.findAll();
-    return products.map(product => product.get('id'));
+  async function getAllProductsIds(): Promise<number[]>{
+      const products = await Product.findAll();
+      return products.map(product => product.get('id')) as number[];
   }
 
 export {

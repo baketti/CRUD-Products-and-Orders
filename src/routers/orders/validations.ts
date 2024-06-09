@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { IError } from '@/lib/interfaces';
 import { PostOrderBodyRequest } from '@/lib/orders.interfaces';
-import { getAllProductsIds } from '@/db/models/Product';
+import { globalStore } from '@/utils/global-store';
 
 export const checkPostOrderBody = [
   body('productsIds').exists().withMessage('No products in the order'),
@@ -43,7 +43,7 @@ export async function checkBodyProducts(
     next:NextFunction
    ) {
     const { productsIds } = req.body;
-    const allIds = await getAllProductsIds();
+    const allIds = globalStore.getData('productsIds');
     const productsExist = productsIds.map(productId => allIds.includes(productId));
     if (productsExist.some(exists => !exists)) {
       let error:IError = {

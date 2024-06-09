@@ -2,7 +2,7 @@ import { SequelizeDB } from ".";
 import { initModels } from "./models/index";
 
 export async function initStruct() {
-    try {
+  try {
         const sequelize = SequelizeDB.getConnection();
         //TEST CONNECTION
         await sequelize.authenticate();

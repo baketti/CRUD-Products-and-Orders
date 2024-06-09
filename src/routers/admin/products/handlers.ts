@@ -6,6 +6,7 @@ import {
 } from "@/lib/products.interfaces";
 import { Product } from "@/db/models/Product";
 import { StatusCodes } from "http-status-codes";
+import { addProductIdToGlobalStore } from "@/utils/global-store"
 
 async function postAdminProducts(
     req: Request<{},{},PostProductBodyRequest>, res) {
@@ -17,6 +18,7 @@ async function postAdminProducts(
             startDate: req.body.startDate,
             endDate: req.body.endDate
         });
+        addProductIdToGlobalStore(new_product);
         return res.status(StatusCodes.OK).json({
             product: new_product,
             message: "Product inserted successfully!"

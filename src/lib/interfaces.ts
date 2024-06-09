@@ -7,7 +7,7 @@ export interface IError {
 
 export type UserInfo = {
     userId: number,
-    userRole: 'admin' | 'user'
+    userRole: 'admin' | 'user'//UserRoles
 }
 
 export enum UserRoles {

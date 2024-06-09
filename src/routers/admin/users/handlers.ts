@@ -46,7 +46,7 @@ async function putUsersByUserId(
         });
         if(!updated_row){
             res.status(StatusCodes.NOT_FOUND).json({
-                message: 'This product does not exists!'
+                message: 'This user does not exists!'
             });
             return;
         }
@@ -68,7 +68,7 @@ async function deleteUsersByUserId(req, res) {
         const deleted_row = await User.destroy<User>({ where: { id: id } }); 
         if(!deleted_row){
             res.status(StatusCodes.NOT_FOUND).json({
-                message: 'This product does not exists!'
+                message: 'This user does not exists!'
             });
             return;
         }

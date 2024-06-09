@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { checkAuthBody, checkAuthPassword } from './validations';
-import { postUserLoginAuth, getUserLogout } from './handlers';
+import { postUserLogin, getUserLogout } from './handlers';
 
 export const router = Router();
 
-router.post('/login', checkAuthBody, checkAuthPassword, postUserLoginAuth);
+router.post('/login', checkAuthBody, checkAuthPassword, postUserLogin);
 
 router.get('/logout', getUserLogout);

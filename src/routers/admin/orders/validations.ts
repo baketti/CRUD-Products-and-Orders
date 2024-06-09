@@ -2,12 +2,12 @@ import { Response, Request, NextFunction } from "express";
 import { query, validationResult } from "express-validator";
 import { GetOrdersRequest, OrdersQueryParams } from "@/lib/orders.interfaces";
 import { IError } from "@/lib/interfaces";
-import { getAllProductsIds } from "@/db/models/Product";
 import { StatusCodes } from "http-status-codes";
+import { globalStore } from "@/utils/global-store";
 
 export const getOrdersQueryParamsValidation = [
-    query('from').optional().isDate().withMessage('Invalid date format for from parameter'),
-    query('to').optional().isDate().withMessage('Invalid date format for to parameter'),
+    query('from').optional().isDate().withMessage('Invalid date format for from parameter: yyyy-mm-dd or yyyy/mm/dd'),
+    query('to').optional().isDate().withMessage('Invalid date format for to parameter: yyyy-mm-dd or yyyy/mm/dd'),
     query('to').optional().custom((value, { req }) => {
       if(value && !req.query.from) {
         return false;
@@ -53,11 +53,10 @@ export const getOrdersQueryParamsValidation = [
 
 //Middleware to check if there are query params and to define the type of search
   export async function checkQueryStringParams(
-    request:Request,
+    req:GetOrdersRequest,
     res:Response,
     next:NextFunction
   ) {    
-      const req = request as GetOrdersRequest;
       //if there are no query params, skip this middleware
       if(!req.query || Object.keys(req.query).length === 0) return next();
       //if there are query params, we assume it's a filtered search
@@ -76,7 +75,7 @@ export const getOrdersQueryParamsValidation = [
         const { productsIds } = req.query;
       //get all products ids from the database to check if the provided ids are valid
       try{
-        const allIds = await getAllProductsIds();
+        const allIds = globalStore.getData('productsIds');
         //if productsIds is only one
         if(!Array.isArray(productsIds)) {
           //if the product is not in the database, return an error

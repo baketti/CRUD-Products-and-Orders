@@ -19,6 +19,13 @@ export function checkAuthBody(req: Request, res: Response, next: NextFunction) {
         };
         next(error);
         return;
+    }else if(req.session?.userId && req.session?.email !== email){
+        const error: IError = {
+            message: "Please, logout first!",
+            status: StatusCodes.OK
+        };
+        next(error);
+        return;
     }
     else {
         next();
@@ -38,15 +45,4 @@ export async function checkAuthPassword(req: Request, res: Response, next: NextF
         return;
     }
     next()
-}
-
-export function checkAuthSession(req: Request, res: Response, next: NextFunction) {
-    if (!req.session?.userId) {
-        next();
-    }
-    else {
-        return res.status(StatusCodes.OK).json({
-            message: "User already logged in!",
-        });
-    }
 }
